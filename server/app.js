@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth');
 const studyRoutes = require('./routes/study');
 const userRoutes = require('./routes/user');
 const { verifyToken } = require('./middleware/auth');
+
 // Import models
 require('./models/User');
 require('./models/Subject');
