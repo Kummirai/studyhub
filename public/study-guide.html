@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Guide - StudyHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">StudyHub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="subjects.html">Subjects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span class="text-white me-3" id="usernameDisplay"></span>
+                    <button class="btn btn-outline-light" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="row mb-4">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="subjects.html">Subjects</a></li>
+                        <li class="breadcrumb-item" id="subjectBreadcrumb"></li>
+                        <li class="breadcrumb-item active" aria-current="page" id="guideTitleBreadcrumb"></li>
+                    </ol>
+                </nav>
+                <h1 id="guideTitle"></h1>
+                <div class="badge bg-secondary mb-3" id="guideDifficulty"></div>
+                <div class="progress mb-3">
+                    <div class="progress-bar" id="guideProgressBar" role="progressbar" style="width: 0%"></div>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <button class="btn btn-outline-primary" id="markAsCompleteBtn">Mark as Complete</button>
+                    <button class="btn btn-primary" id="saveNotesBtn">Save Notes</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body" id="guideContent">
+                        <!-- Guide content will be loaded here -->
+                        <div class="text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Your Notes</h5>
+                        <textarea class="form-control mb-3" id="userNotes" rows="10" placeholder="Add your notes here..."></textarea>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Related Guides</h5>
+                        <div class="list-group" id="relatedGuides">
+                            <!-- Related guides will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; 2023 StudyHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/study-guide.js"></script>
+</body>
+</html>
