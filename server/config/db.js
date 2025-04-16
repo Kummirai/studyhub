@@ -1,19 +1,23 @@
-const mongoose = require('mongoose');
+const { Pool } = require('pg');
 const config = require('config');
 
-const connectDB = async () => {
-    try {
-        await mongoose.connect(config.get('mongoURI'), {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useCreateIndex: true,
-            useFindAndModify: false
-        });
-        console.log('MongoDB Connected...');
-    } catch (err) {
-        console.error(err.message);
-        process.exit(1);
-    }
-};
+const dbConfig = config.get('db');
 
-module.exports = connectDB;
+const pool = new Pool({
+  host: dbConfig.host,
+  port: dbConfig.port,
+  database: dbConfig.database,
+  user: dbConfig.user,
+  password: dbConfig.password
+});
+
+// Test the connection
+pool.query('SELECT NOW()', (err, res) => {
+  if (err) {
+    console.error('Error connecting to PostgreSQL:', err);
+  } else {
+    console.log('PostgreSQL connected successfully:', res.rows[0]);
+  }
+});
+
+module.exports = pool;
