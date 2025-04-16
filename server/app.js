@@ -6,6 +6,21 @@ const authRoutes = require('./routes/auth');
 const studyRoutes = require('./routes/study');
 const userRoutes = require('./routes/user');
 const { verifyToken } = require('./middleware/auth');
+// Import models
+require('./models/User');
+require('./models/Subject');
+require('./models/StudyGuide');
+require('./models/Progress');
+
+// Sync database
+(async () => {
+  try {
+    await sequelize.sync({ alter: true });
+    console.log('Database synced');
+  } catch (error) {
+    console.error('Database sync error:', error);
+  }
+})();
 
 const app = express();
 

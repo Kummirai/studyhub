@@ -1,35 +1,46 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db');
+const User = require('./User');
+const StudyGuide = require('./StudyGuide');
 
-const ProgressSchema = new mongoose.Schema({
-    user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+const Progress = sequelize.define('Progress', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  completion_percentage: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    validate: {
+      min: 0,
+      max: 100
     },
-    guide_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'StudyGuide',
-        required: true
-    },
-    completion_percentage: {
-        type: Number,
-        default: 0,
-        min: 0,
-        max: 100
-    },
-    last_accessed: {
-        type: Date,
-        default: Date.now
-    },
-    notes: {
-        type: String,
-        default: ''
-    }
+    field: 'completion_percentage'
+  },
+  notes: {
+    type: DataTypes.TEXT,
+    field: 'notes'
+  },
+  last_accessed: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+    field: 'last_accessed'
+  }
 }, {
-    timestamps: true
+  tableName: 'user_progress',
+  timestamps: false,
+  underscored: true,
+  indexes: [
+    {
+      unique: true,
+      fields: ['user_id', 'guide_id']
+    }
+  ]
 });
 
-// Ensure one progress record per user per guide
-ProgressSchema.index({ user_id: 1, guide_id: 1 }, { unique: true });
+// Define associations
+Progress.belongsTo(User, { foreignKey: 'user_id' });
+Progress.belongsTo(StudyGuide, { foreignKey: 'guide_id' });
 
-module.exports = mongoose.model('Progress', ProgressSchema);
+module.exports = Progress;

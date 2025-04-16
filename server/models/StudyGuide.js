@@ -1,33 +1,41 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db');
+const Subject = require('./Subject');
 
-const StudyGuideSchema = new mongoose.Schema({
-    subject_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Subject',
-        required: true
-    },
-    title: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    content: {
-        type: String,
-        required: true
-    },
-    difficulty_level: {
-        type: String,
-        enum: ['Beginner', 'Intermediate', 'Advanced'],
-        default: 'Beginner'
-    },
-    created_at: {
-        type: Date,
-        default: Date.now
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now
-    }
+const StudyGuide = sequelize.define('StudyGuide', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  title: {
+    type: DataTypes.STRING(100),
+    allowNull: false
+  },
+  content: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  difficulty_level: {
+    type: DataTypes.ENUM('Beginner', 'Intermediate', 'Advanced'),
+    defaultValue: 'Beginner'
+  },
+  created_at: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  }
+}, {
+  tableName: 'study_guides',
+  timestamps: false,
+  underscored: true
 });
 
-module.exports = mongoose.model('StudyGuide', StudyGuideSchema);
+// Define associations
+StudyGuide.belongsTo(Subject, { foreignKey: 'subject_id' });
+Subject.hasMany(StudyGuide, { foreignKey: 'subject_id' });
+
+module.exports = StudyGuide;

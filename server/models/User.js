@@ -1,67 +1,81 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
 const bcrypt = require('bcryptjs');
-const config = require('config');
 const jwt = require('jsonwebtoken');
+const config = require('config');
+const sequelize = require('../config/db');
 
-const UserSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        trim: true
-    },
-    password_hash: {
-        type: String,
-        required: true
-    },
-    grade_level: {
-        type: Number,
-        required: true,
-        min: 7,
-        max: 10
-    },
-    created_at: {
-        type: Date,
-        default: Date.now
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now
+const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  username: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
+    unique: true,
+    validate: {
+      notEmpty: true
     }
-});
-
-// Hash password before saving
-UserSchema.pre('save', async function(next) {
-    if (!this.isModified('password_hash')) return next();
-    
-    try {
+  },
+  email: {
+    type: DataTypes.STRING(100),
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true
+    }
+  },
+  password_hash: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    field: 'password_hash'
+  },
+  grade_level: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      min: 7,
+      max: 10
+    },
+    field: 'grade_level'
+  },
+  created_at: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+    field: 'created_at'
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+    field: 'updated_at'
+  }
+}, {
+  tableName: 'users',
+  timestamps: false,
+  underscored: true,
+  hooks: {
+    beforeSave: async (user) => {
+      if (user.changed('password_hash')) {
         const salt = await bcrypt.genSalt(10);
-        this.password_hash = await bcrypt.hash(this.password_hash, salt);
-        next();
-    } catch (err) {
-        next(err);
+        user.password_hash = await bcrypt.hash(user.password_hash, salt);
+      }
     }
+  }
 });
 
-// Method to compare passwords
-UserSchema.methods.comparePassword = async function(candidatePassword) {
-    return await bcrypt.compare(candidatePassword, this.password_hash);
+// Instance method to compare passwords
+User.prototype.comparePassword = async function(candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password_hash);
 };
 
 // Generate JWT token
-UserSchema.methods.generateAuthToken = function() {
-    return jwt.sign(
-        { user: { id: this._id } },
-        config.get('jwtSecret'),
-        { expiresIn: '7d' }
-    );
+User.prototype.generateAuthToken = function() {
+  return jwt.sign(
+    { user: { id: this.id } },
+    config.get('jwtSecret'),
+    { expiresIn: '7d' }
+  );
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = User;
