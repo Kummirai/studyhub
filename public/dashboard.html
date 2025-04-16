@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - StudyHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">StudyHub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="subjects.html">Subjects</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="dashboard.html">Dashboard</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span class="text-white me-3" id="usernameDisplay"></span>
+                    <button class="btn btn-outline-light" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="row mb-4">
+            <div class="col">
+                <h1>Your Dashboard</h1>
+                <p class="lead">Welcome back to your personalized learning space</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h3 class="card-title">Your Grade</h3>
+                        <p class="display-4" id="userGrade">-</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h3 class="card-title">Guides Completed</h3>
+                        <p class="display-4" id="guidesCompleted">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h3 class="card-title">Average Progress</h3>
+                        <p class="display-4" id="avgProgress">0%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h3 class="card-title">Recent Activity</h3>
+                        <div class="list-group" id="recentActivity">
+                            <div class="list-group-item">No recent activity</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h3 class="card-title">Recommended Guides</h3>
+                        <div class="list-group" id="recommendedGuides">
+                            <div class="list-group-item">Loading recommendations...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Progress by Subject</h3>
+                        <canvas id="progressChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; 2023 StudyHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
